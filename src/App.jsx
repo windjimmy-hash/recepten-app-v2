@@ -160,6 +160,32 @@ function App() {
     reader.readAsText(file);
   };
 
+  const importAndReplaceRecipes = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    if (!window.confirm('⚠️ Dit vervangt ALLE huidige recepten. Weet je het zeker?')) {
+      e.target.value = ''; // Reset file input
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const imported = JSON.parse(event.target.result);
+        if (Array.isArray(imported)) {
+          saveRecipes(imported); // Vervangt alles
+          alert(`✅ Alle recepten vervangen! Je hebt nu ${imported.length} recepten.`);
+        } else {
+          alert('❌ Ongeldig bestandsformaat');
+        }
+      } catch (error) {
+        alert('❌ Fout bij importeren: ' + error.message);
+      }
+    };
+    reader.readAsText(file);
+  };
+
 const importExcel = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -267,6 +293,11 @@ const importExcel = async (e) => {
                 <Upload className="w-4 h-4" />
                 Import Excel
                 <input type="file" accept=".xlsx,.xls" onChange={importExcel} className="hidden" />
+              </label>
+              <label className="flex items-center gap-2 px-4 py-2 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 cursor-pointer">
+                <Upload className="w-4 h-4" />
+                Vervang Alles
+                <input type="file" accept=".json" onChange={importAndReplaceRecipes} className="hidden" />
               </label>
               <button
                 onClick={() => setShowAddForm(true)}
