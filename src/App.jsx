@@ -248,7 +248,7 @@ const importExcel = async (e) => {
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-3">
               <ChefHat className="w-8 h-8 text-orange-600" />
-              <h1 className="text-2xl font-bold text-gray-800">Recepten Collectie</h1>
+              <h1 className="text-2xl font-bold text-gray-800">Rebellenclub Recepten</h1>
             </div>
             <div className="flex flex-wrap gap-2">
               <button
