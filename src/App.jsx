@@ -236,7 +236,7 @@ const importExcel = async (e) => {
     
     const recipeCategories = Array.isArray(recipe.categories) ? recipe.categories : (recipe.category ? [recipe.category] : ['Other']);
     const categoryArray = Array.isArray(filterCategory) ? filterCategory : [];
-    const matchesCategory = categoryArray.length === 0 || categoryArray.some(cat => recipeCategories.includes(cat));
+    const matchesCategory = categoryArray.length === 0 || categoryArray.every(cat => recipeCategories.includes(cat));
     
     return matchesSearch && matchesCategory;
   });
