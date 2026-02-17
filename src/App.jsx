@@ -160,6 +160,73 @@ function App() {
     reader.readAsText(file);
   };
 
+const importExcel = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+      const XLSX = await import('https://cdn.sheetjs.com/xlsx-0.20.0/package/xlsx.mjs');
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const data = new Uint8Array(event.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: '', raw: false });
+
+          const converted = rows.slice(1).map((row, index) => {
+            const name = row[0] || '';
+            const source = row[1] || '';
+            const ingredients = row[2] || '';
+            const category1 = row[3] || '';
+            const category2 = row[4] || '';
+            
+            if (!name) return null;
+            
+            const categories = [];
+            if (category1) categories.push(category1.trim());
+            if (category2) categories.push(category2.trim());
+            if (categories.length === 0) categories.push('Other');
+            
+            const isUrl = source.startsWith('http://') || source.startsWith('https://') || source.includes('www.');
+            
+            return {
+              id: Date.now().toString() + '_' + index,
+              name: name,
+              categories: categories,
+              sourceType: isUrl ? 'online' : 'book',
+              sourceUrl: isUrl ? source : '',
+              bookTitle: isUrl ? '' : source,
+              bookAuthor: '',
+              bookPage: '',
+              ingredients: ingredients,
+              instructions: '',
+              prepTime: '',
+              cookTime: '',
+              servings: '',
+              guests: '',
+              notes: '',
+              createdAt: new Date().toISOString()
+            };
+          }).filter(r => r !== null);
+
+          if (converted.length > 0) {
+            saveRecipes([...recipes, ...converted]);
+            alert(`✅ ${converted.length} recepten geïmporteerd uit Excel!`);
+          } else {
+            alert('❌ Geen recepten gevonden');
+          }
+        } catch (error) {
+          alert(`❌ Fout: ${error.message}`);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    } catch (error) {
+      alert(`❌ Fout: ${error.message}`);
+    }
+  };
+  
   const filteredRecipes = recipes.filter(recipe => {
     const matchesSearch = 
       recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -195,6 +262,11 @@ function App() {
                 <Upload className="w-4 h-4" />
                 Import JSON
                 <input type="file" accept=".json" onChange={importRecipes} className="hidden" />
+              </label>
+              <label className="flex items-center gap-2 px-4 py-2 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200 cursor-pointer">
+                <Upload className="w-4 h-4" />
+                Import Excel
+                <input type="file" accept=".xlsx,.xls" onChange={importExcel} className="hidden" />
               </label>
               <button
                 onClick={() => setShowAddForm(true)}
