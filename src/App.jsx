@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, Plus, X, Edit2, Download, Upload, ChefHat, ExternalLink, Book } from 'lucide-react';
-
+import { Search, Plus, X, Edit2, Trash2, Download, Upload, ChefHat, ExternalLink, Book } from 'lucide-react';
 function App() {
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -126,6 +125,19 @@ function App() {
     setEditingRecipe(recipe);
     setShowAddForm(true);
     setViewingRecipe(null);
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Weet je zeker dat je dit recept wilt verwijderen?')) {
+      return;
+    }
+    
+    const updatedRecipes = recipes.filter(r => r.id !== id);
+    const success = saveRecipes(updatedRecipes);
+    if (success) {
+      setViewingRecipe(null);
+      alert('✅ Recept verwijderd!');
+    }
   };
 
   const exportRecipes = () => {
@@ -563,6 +575,12 @@ const importExcel = async (e) => {
                   className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
                 >
                   <Edit2 className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => handleDelete(viewingRecipe.id)}
+                  className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                >
+                  <Trash2 className="w-5 h-5" />
                 </button>
                 <button
                   onClick={() => setViewingRecipe(null)}
