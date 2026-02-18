@@ -38,7 +38,7 @@ function App() {
     }
   };
 
-  const categories = ['Vlees', 'Vis', 'vega', 'Voorgerecht', 'Toetje', 'Bijgerecht', 'Thomas', 'Other'];
+  const categories = ['Vlees', 'Vis', 'vega', 'Voorgerecht', 'Toetje', 'Bijgerecht', 'Thomas', 'Ontbijt'];
 
   const getCategoryColor = (cat) => {
     switch(cat) {
