@@ -692,7 +692,7 @@ const importExcel = async (e) => {
                       )}
                     </div>
                     <div className="flex flex-wrap gap-2 mb-3">
-                      {(recipe.categories || ['Other']).slice(0, 2).map(cat => (
+                      {(recipe.categories || ['Other']).slice(0, 3).map(cat => (
                         <span key={cat} className={`px-2 py-1 rounded-full text-xs ${getCategoryColor(cat)}`}>
                           {cat}
                         </span>
