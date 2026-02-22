@@ -277,7 +277,8 @@ const importExcel = async (e) => {
     const categoryArray = Array.isArray(filterCategory) ? filterCategory : [];
     const matchesCategory = categoryArray.length === 0 || categoryArray.every(cat => recipeCategories.includes(cat));
     
-    return matchesSearch && matchesCategory;
+     return matchesSearch && matchesCategory;
+}).sort((a, b) => b.id - a.id);
   });
 
   return (
