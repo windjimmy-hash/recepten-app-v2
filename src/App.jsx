@@ -278,7 +278,7 @@ const importExcel = async (e) => {
     const matchesCategory = categoryArray.length === 0 || categoryArray.every(cat => recipeCategories.includes(cat));
     
      return matchesSearch && matchesCategory;
-}).sort((a, b) => b.id - a.id);
+}).sort(function(a, b) { return b.id - a.id; });
   });
 
   return (
