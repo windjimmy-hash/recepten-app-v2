@@ -279,7 +279,6 @@ const importExcel = async (e) => {
     
      return matchesSearch && matchesCategory;
 }).sort(function(a, b) { return b.id - a.id; });
-  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50">
