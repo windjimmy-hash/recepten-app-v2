@@ -46,7 +46,7 @@ function App() {
       case 'vega': return 'bg-green-100 text-green-700';
       case 'Thomas': return 'bg-purple-100 text-purple-700';
       case 'Pasta': return 'bg-yellow-100 text-yellow-700';
-      case 'BBQ': return 'bg-brown-100 text-brown-700';
+      case 'BBQ': return 'bg-amber-100 text-amber-700';
       default: return 'bg-orange-100 text-orange-700';
     }
   };
